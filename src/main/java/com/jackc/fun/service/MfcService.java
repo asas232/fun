@@ -36,7 +36,6 @@ public class MfcService {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
     public  static ModelLikeList modelLikeList;
     public  static List<MfcModelVo> likeOnlineModels = new ArrayList<>();
     public  static List<MfcModelVo> OnlineModels = new ArrayList<>();

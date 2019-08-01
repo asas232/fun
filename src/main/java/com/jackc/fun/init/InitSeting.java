@@ -2,6 +2,7 @@ package com.jackc.fun.init;
 
 import com.jackc.fun.pojo.ModelLikeList;
 import com.jackc.fun.service.MfcService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
  * Created by cj on 2019/7/28.
  */
 @Service
+@Slf4j
 public class InitSeting implements CommandLineRunner {
     @Autowired
     private ModelLikeList modelLikeList;
@@ -22,6 +24,7 @@ public class InitSeting implements CommandLineRunner {
             InitSeting.isWindow =  true;
          }
         MfcService.modelLikeList = modelLikeList;
+        log.info("启动selenium");
         SeleniumInit.noproxyDriver();
 //        Runnable runnable = new Runnable() {
 //            @Override
