@@ -53,7 +53,7 @@ public class MfcService {
             driver.get("https://www.myfreecams.com");
             log.info("--2222222");
             driver.findElement(By.xpath("//*[@id=\"enter_desktop\"]")).click();
-            log.info("--3333333")
+            log.info("--3333333");
         } catch (Exception e) {
             log.error("",e);
         }
