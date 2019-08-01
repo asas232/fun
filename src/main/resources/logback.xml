@@ -6,9 +6,9 @@
         </encoder>
     </appender>
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/logs/fun/fun.log</file>
+        <file>/app/logs/fun/fun.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>/logs/sp_business_banggood/%d{YYYYMMdd}/sp_business_banggood.%i.log.zip</fileNamePattern>
+            <fileNamePattern>/app/logs/fun/%d{YYYYMMdd}/fun.%i.log.zip</fileNamePattern>
             <maxFileSize>20MB</maxFileSize>
             <maxHistory>300</maxHistory>
         </rollingPolicy>
