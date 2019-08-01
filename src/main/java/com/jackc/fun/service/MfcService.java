@@ -45,6 +45,9 @@ public class MfcService {
 
     @Scheduled(cron="0 */2 * * * ?")
     public static void open(){
+        if(driver == null){
+            return;
+        }
         driver.get("https://www.myfreecams.com");
         try {
             driver.findElement(By.xpath("//*[@id=\"enter_desktop\"]")).click();
