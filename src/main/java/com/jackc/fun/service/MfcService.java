@@ -42,7 +42,7 @@ public class MfcService {
     public  static Map<Integer,Process> processMap = new HashMap<>();
 
 
-    @Scheduled(cron="0 */5 * * * ?")
+    @Scheduled(cron="0 */2 * * * ?")
     public static void open(){
         if(driver == null){
             log.info("--driver----");
@@ -51,7 +51,7 @@ public class MfcService {
         try {
             log.info("--1111111");
             driver.get("https://www.myfreecams.com");
-            log.info("--2222222");
+//            log.info("--2222222");
             driver.findElement(By.xpath("//*[@id=\"enter_desktop\"]")).click();
             log.info("--3333333");
         } catch (Exception e) {
