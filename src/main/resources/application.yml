@@ -1,0 +1,26 @@
+custom:
+    rest:
+        connection:
+            connect-timeout: 5000
+            connection-request-timeout: 5000
+            default-max-per-route: 10
+            max-total: 150
+            socket-timeout: 60000
+server:
+    port: 8010
+spring:
+    mvc:
+        static-path-pattern: /resources/**
+    thymeleaf:
+        cache: false
+        mode: LEGACYHTML5
+models:
+  - uid: 14110474
+    mode: 1
+    nm: RavenAzarath
+  - uid: 6586417
+    mode: 1
+    nm: MsTease_
+  - uid: 16914400
+    mode: 1
+    nm: KorraX
