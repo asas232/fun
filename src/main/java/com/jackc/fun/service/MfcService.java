@@ -50,8 +50,8 @@ public class MfcService {
         }
         try {
             log.info("--1111111");
-            driver.get("https://www.google.com");
-//            log.info("--2222222");
+            driver.get("https://www.myfreecams.com/#Homepage");
+            log.info("--2222222");
 //            driver.findElement(By.xpath("//*[@id=\"enter_desktop\"]")).click();
             log.info("--3333333");
         } catch (Exception e) {
