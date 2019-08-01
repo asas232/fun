@@ -44,13 +44,16 @@ public class MfcService {
 
     @Scheduled(cron="0 */2 * * * ?")
     public static void open(){
-        log.info("--driver",driver);
         if(driver == null){
+            log.info("--driver----");
             return;
         }
         try {
+            log.info("--1111111");
             driver.get("https://www.myfreecams.com");
+            log.info("--2222222");
             driver.findElement(By.xpath("//*[@id=\"enter_desktop\"]")).click();
+            log.info("--3333333")
         } catch (Exception e) {
             log.error("",e);
         }
