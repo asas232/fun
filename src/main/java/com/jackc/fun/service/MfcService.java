@@ -139,7 +139,7 @@ public class MfcService {
             log.info(JsonUtil.stringify("在线---"+likeOnlineModels));
         }
 
-//        recordModelOnline();
+        recordModelOnline();
     }
 
     public void recordModelOnline(){

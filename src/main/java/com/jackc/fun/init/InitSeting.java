@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+
 /**
  * Created by cj on 2019/7/28.
  */
@@ -23,6 +25,8 @@ public class InitSeting implements CommandLineRunner {
         if(os.toLowerCase().startsWith("win")){
             InitSeting.isWindow =  true;
          }
+        File file = new File("/tmp/app-initialized");
+        file.mkdirs();
         MfcService.modelLikeList = modelLikeList;
         log.info("启动selenium");
         SeleniumInit.noproxyDriver();

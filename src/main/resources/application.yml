@@ -7,7 +7,7 @@ custom:
             max-total: 150
             socket-timeout: 60000
 server:
-    port: ${PORT:8010}
+    port: 8010
 spring:
     mvc:
         static-path-pattern: /resources/**
