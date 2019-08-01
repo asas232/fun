@@ -44,11 +44,12 @@ public class MfcService {
 
     @Scheduled(cron="0 */2 * * * ?")
     public static void open(){
+        log.info("--driver",driver);
         if(driver == null){
             return;
         }
-        driver.get("https://www.myfreecams.com");
         try {
+            driver.get("https://www.myfreecams.com");
             driver.findElement(By.xpath("//*[@id=\"enter_desktop\"]")).click();
         } catch (Exception e) {
             log.error("",e);
@@ -57,19 +58,23 @@ public class MfcService {
             log.info("--扫描");
             Thread.sleep(10000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.error("",e);
         }
-        String scriptToExecute = "var performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {}; var network = performance.getEntries() || {}; return network;";
-        List<Map<String,Object>> o = (List<Map<String, Object>>) ((JavascriptExecutor) driver).executeScript(scriptToExecute);
-        List<MfcPerformanceVo> mfcPerformanceVos = JsonUtil.convertValue(o,MfcPerformanceVo.class);
-        log.info("performance数量："+mfcPerformanceVos.size());
-        for (MfcPerformanceVo mfcPerformanceVo : mfcPerformanceVos) {
-            String name = mfcPerformanceVo.getName();
-            if(name.contains("php/FcwExtResp.php") && name.contains("type=14")){
-                log.info(name);
-                MfcService mfcService = new MfcService();
-                mfcService.getModelMSg(name);
+        try {
+            String scriptToExecute = "var performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {}; var network = performance.getEntries() || {}; return network;";
+            List<Map<String,Object>> o = (List<Map<String, Object>>) ((JavascriptExecutor) driver).executeScript(scriptToExecute);
+            List<MfcPerformanceVo> mfcPerformanceVos = JsonUtil.convertValue(o,MfcPerformanceVo.class);
+            log.info("performance数量："+mfcPerformanceVos.size());
+            for (MfcPerformanceVo mfcPerformanceVo : mfcPerformanceVos) {
+                String name = mfcPerformanceVo.getName();
+                if(name.contains("php/FcwExtResp.php") && name.contains("type=14")){
+                    log.info(name);
+                    MfcService mfcService = new MfcService();
+                    mfcService.getModelMSg(name);
+                }
             }
+        } catch (Exception e) {
+            log.error("",e);
         }
 //        driver.close();
     }
@@ -177,25 +182,29 @@ public class MfcService {
 
     @Scheduled(cron="0 */1 * * * ?")
     public void checkRecordModelProcess() {
-        Map<Integer, MfcModelVo> uidMap = likeOnlineModels
-                .stream().collect(Collectors.toMap(MfcModelVo::getUid, Function.identity(), (k1, k2) -> k2));
-        Set<Integer> uidSet = processMap.keySet();
-        for (Integer uid : uidSet) {
-            Process process = processMap.get(uid);
-            if (!uidMap.containsKey(uid)) {
-                process.destroy();
-            } else {
-                if (!process.isAlive()) {
-                    processMap.remove(uid);
-                    Iterator<MfcModelVo> it = likeOnlineModels.iterator();
-                    while (it.hasNext()) {
-                        MfcModelVo next = it.next();
-                        if (uid.equals(next.getUid())) {
-                            it.remove();
+        try {
+            Map<Integer, MfcModelVo> uidMap = likeOnlineModels
+                    .stream().collect(Collectors.toMap(MfcModelVo::getUid, Function.identity(), (k1, k2) -> k2));
+            Set<Integer> uidSet = processMap.keySet();
+            for (Integer uid : uidSet) {
+                Process process = processMap.get(uid);
+                if (!uidMap.containsKey(uid)) {
+                    process.destroy();
+                } else {
+                    if (!process.isAlive()) {
+                        processMap.remove(uid);
+                        Iterator<MfcModelVo> it = likeOnlineModels.iterator();
+                        while (it.hasNext()) {
+                            MfcModelVo next = it.next();
+                            if (uid.equals(next.getUid())) {
+                                it.remove();
+                            }
                         }
                     }
                 }
             }
+        } catch (Exception e) {
+            log.error("",e);
         }
     }
 
