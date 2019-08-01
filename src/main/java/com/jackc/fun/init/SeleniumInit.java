@@ -49,9 +49,9 @@ public class SeleniumInit {
         if (InitSeting.isWindow) {
             System.setProperty("webdriver.chrome.driver", "D:\\devsoft\\chromedriver_win32\\chromedriver.exe");
         }
-//        }else {
-//            System.setProperty("webdriver.chrome.driver", "/app/.apt/usr/bin/google-chrome");
-//        }
+       else {
+            System.setProperty("webdriver.chrome.driver", "/app/.chromedriver/bin/chromedriver");
+        }
             ChromeOptions chromeOptions = new ChromeOptions();
             chromeOptions.addArguments("--headless");
             if (!InitSeting.isWindow) {
