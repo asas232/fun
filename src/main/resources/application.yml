@@ -5,7 +5,7 @@ custom:
             connection-request-timeout: 5000
             default-max-per-route: 10
             max-total: 150
-            socket-timeout: 60000
+            socket-timeout: 5000
 server:
     port: 8010
 spring:
