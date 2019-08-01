@@ -47,6 +47,9 @@ public class SeleniumInit {
         }
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("--headless");
+        if(!InitSeting.isWindow){
+            chromeOptions.setBinary("/app/.apt/usr/bin/google-chrome");
+        }
         if(InitSeting.isWindow) {
             chromeOptions.addArguments("--proxy-server=socks5://" + "127.0.0.1:1080");
         }
