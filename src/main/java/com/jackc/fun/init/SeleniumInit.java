@@ -48,6 +48,7 @@ public class SeleniumInit {
     public static void noproxyDriver() {
         if (InitSeting.isWindow) {
             System.setProperty("webdriver.chrome.driver", "D:\\devsoft\\chromedriver_win32\\chromedriver.exe");
+        }
 //        }else {
 //            System.setProperty("webdriver.chrome.driver", "/app/.apt/usr/bin/google-chrome");
 //        }
@@ -68,5 +69,5 @@ public class SeleniumInit {
             }
             driver = new ChromeDriver(chromeOptions);
         }
-    }
+
 }
