@@ -26,7 +26,8 @@ public class InitSeting implements CommandLineRunner {
             InitSeting.isWindow =  true;
          }
         File file = new File("/tmp/app-initialized");
-        file.mkdirs();
+//        file.mkdirs();
+        file.createNewFile();
         MfcService.modelLikeList = modelLikeList;
         log.info("启动selenium");
         SeleniumInit.noproxyDriver();
