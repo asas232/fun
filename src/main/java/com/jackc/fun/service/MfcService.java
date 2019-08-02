@@ -59,7 +59,7 @@ public class MfcService {
         }
         try {
             log.info("--扫描");
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             log.error("",e);
         }
