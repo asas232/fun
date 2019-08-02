@@ -44,9 +44,14 @@ public class MfcService {
 
     @Scheduled(cron="0 */2 * * * ?")
     public static void open(){
-        if(driver == null){
-            log.info("--driver----");
-            return;
+        try {
+            driver.get("chrome://settings/clearBrowserData");
+            Thread.sleep(2000);
+            driver.switchTo().activeElement();
+            driver.findElement(By.cssSelector("* /deep/ #clearBrowsingDataConfirm")).click();
+            Thread.sleep(1000);
+        } catch (Exception e) {
+
         }
         try {
             log.info("--1111111");
@@ -147,7 +152,7 @@ public class MfcService {
             log.info(JsonUtil.stringify("在线---"+likeOnlineModels));
         }
 
-        recordModelOnline();
+//        recordModelOnline();
     }
 
     public void recordModelOnline(){
