@@ -1,10 +1,8 @@
 package com.jackc.fun.selenium;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.jackc.fun.pojo.MfcPerformanceVo;
+import com.jackc.fun.pojo.ResponseReceivedEventSmall;
 import com.jackc.fun.service.MfcService;
 import com.jackc.fun.utils.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -13,33 +11,32 @@ import net.lightbody.bmp.client.ClientUtil;
 import net.lightbody.bmp.core.har.Har;
 import net.lightbody.bmp.core.har.HarEntry;
 import net.lightbody.bmp.proxy.CaptureType;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.util.EntityUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.logging.*;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
-import java.util.stream.Collectors;
 
 /**
  * @Description
@@ -51,13 +48,14 @@ public class Test {
     public static BrowserMobProxyServer proxy;
     private static final int COMMAND_TIMEOUT = 5000;
     // 必须固定端口，因为ChromeDriver没有实时获取端口的接口；
-    private static final int CHROME_DRIVER_PORT = 9999;
+    private static final int CHROME_DRIVER_PORT = 19999;
 
     public static void main(String[] args) {
 //      test1();
 //      test2();
 //      test3();
-        recordVideo();
+      test5();
+//        recordVideo();
     }
 
     public static  void proxy(){
@@ -280,6 +278,80 @@ public class Test {
 //        }
 
     }
+
+
+    public static void test5(){
+        ChromeDriverService.Builder builder = new ChromeDriverService.Builder();
+        ChromeDriverService chromeService = builder
+                .usingDriverExecutable(new File("D:\\devsoft\\chromedriver_win32\\chromedriver.exe"))
+                .usingPort(CHROME_DRIVER_PORT).build();
+        try {
+            chromeService.start();
+        } catch (IOException e) {
+
+        }
+        System.setProperty("webdriver.chrome.driver", "D:\\devsoft\\chromedriver_win32\\chromedriver.exe");
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--headless");
+        chromeOptions.addArguments("--proxy-server=socks5://" + "127.0.0.1:1080");
+        LoggingPreferences logPrefs = new LoggingPreferences();
+        logPrefs.enable( LogType.PERFORMANCE, Level.ALL );
+        chromeOptions.setCapability( "goog:loggingPrefs", logPrefs );
+//        WebDriver driver = new ChromeDriver(chromeOptions);
+        ChromeDriver driver = new ChromeDriver(chromeService,chromeOptions);
+        driver.get("https://www.myfreecams.com");
+//        driver.findElement(By.xpath("//*[@id=\"enter_desktop\"]")).click();
+        try {
+            log.info("--sssssssssssssssss");
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        LogEntries les = driver.manage().logs().get(LogType.PERFORMANCE);
+        for (LogEntry le : les) {
+            String message = le.getMessage();
+            String s = JsonUtil.pathToValue(message, String.class, "message", "method");
+            try {
+                JsonNode jsonNode = JsonUtil.objectMapper.readTree(message);
+                String method = JsonUtil.treeToValue(jsonNode, String.class, "message", "method");
+                log.info(method);
+                if(method.equals("Network.responseReceived")){
+                    ResponseReceivedEventSmall responseReceivedEvent = JsonUtil.treeToValue(jsonNode, ResponseReceivedEventSmall.class, "message", "params");
+                    String type = responseReceivedEvent.getType();
+                    ResponseReceivedEventSmall.ResponseBean response = responseReceivedEvent.getResponse();
+                    String url = "";
+                    if(response!= null){
+                        url = response.getUrl();
+                    }
+                    if("XHR".equals(type.toUpperCase()) && url.contains("php/FcwExtResp.php") && url.contains("type=14")){
+                       getResponseBody(responseReceivedEvent.getRequestId(),driver);
+                    }
+                }
+            } catch (IOException e) {
+
+            }
+
+        }
+        driver.close();
+        chromeService.stop();
+    }
+
+
+
+    public static String getResponseBody(String requestId,ChromeDriver driver) {
+        String url = String.format("http://localhost:%s/session/%s/goog/cdp/execute",
+                CHROME_DRIVER_PORT, driver.getSessionId());
+        RestTemplate restTemplate = new RestTemplate();
+        Map map = new HashMap();
+        Map paramMap = new HashMap();
+        map.put("cmd","Network.getResponseBody");
+        paramMap.put("requestId",requestId);
+        map.put("params",paramMap);
+        String s = restTemplate.postForObject(url, map, String.class);
+        log.info(s);
+        return s;
+    }
+
 
 
 }

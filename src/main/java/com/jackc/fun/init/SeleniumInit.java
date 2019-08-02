@@ -7,10 +7,12 @@ import org.apache.commons.exec.environment.EnvironmentUtils;
 import org.openqa.selenium.Proxy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
@@ -23,6 +25,9 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 public class SeleniumInit {
+
+    // 必须固定端口，因为ChromeDriver没有实时获取端口的接口；
+    private static final int CHROME_DRIVER_PORT = 19999;
 
     public static WebDriver driver = null;
 
@@ -71,5 +76,47 @@ public class SeleniumInit {
             driver = new ChromeDriver(chromeOptions);
 //            driver.manage().timeouts().pageLoadTimeout(5,TimeUnit.SECONDS);
         }
+
+
+    public static void chromeServiceDriver() {
+        String driverPath = null;
+        if (InitSeting.isWindow) {
+            driverPath ="D:\\devsoft\\chromedriver_win32\\chromedriver.exe";
+        }
+        else {
+            driverPath ="/app/.chromedriver/bin/chromedriver";
+        }
+        ChromeDriverService.Builder builder = new ChromeDriverService.Builder();
+        ChromeDriverService chromeService = builder
+                .usingDriverExecutable(new File(driverPath))
+                .usingPort(CHROME_DRIVER_PORT).build();
+        try {
+            chromeService.start();
+        } catch (IOException e) {
+
+        }
+        if (InitSeting.isWindow) {
+            System.setProperty("webdriver.chrome.driver", driverPath);
+        }
+        else {
+            System.setProperty("webdriver.chrome.driver", driverPath);
+        }
+        ChromeOptions chromeOptions = new ChromeOptions();
+        chromeOptions.addArguments("--headless");
+        if (!InitSeting.isWindow) {
+            String binaryPath = null;
+            try {
+                binaryPath = EnvironmentUtils.getProcEnvironment().get("GOOGLE_CHROME_SHIM");
+            } catch (IOException e) {
+
+            }
+            chromeOptions.setBinary(binaryPath);
+        }
+        if (InitSeting.isWindow) {
+            chromeOptions.addArguments("--proxy-server=socks5://" + "127.0.0.1:1080");
+        }
+        driver = new ChromeDriver(chromeService,chromeOptions);
+//            driver.manage().timeouts().pageLoadTimeout(5,TimeUnit.SECONDS);
+    }
 
 }

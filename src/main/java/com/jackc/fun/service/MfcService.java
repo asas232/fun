@@ -43,7 +43,7 @@ public class MfcService {
     public  static Map<Integer,Process> processMap = new HashMap<>();
 
 
-    @Scheduled(cron="0 */5 * * * ?")
+    @Scheduled(cron="0 */2 * * * ?")
     public static void open(){
 //        try {
 //            driver.get("chrome://settings/clearBrowserData");
@@ -56,7 +56,7 @@ public class MfcService {
 //
 //        }
         try {
-            SeleniumInit.noproxyDriver();
+//            SeleniumInit.noproxyDriver();
             log.info("--1111111");
             driver.get("https://www.myfreecams.com/#Homepage");
             log.info("--2222222");
