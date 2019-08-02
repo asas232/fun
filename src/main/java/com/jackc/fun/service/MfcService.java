@@ -44,7 +44,7 @@ public class MfcService {
     public  static Map<Integer,Process> processMap = new HashMap<>();
 
 
-    @Scheduled(cron="0 */2 * * * ?")
+    @Scheduled(cron="0 */5 * * * ?")
     public static void open(){
 //        try {
 //            driver.get("chrome://settings/clearBrowserData");
