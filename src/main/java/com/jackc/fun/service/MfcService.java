@@ -164,7 +164,8 @@ public class MfcService {
                 Integer uid = onlineModel.getUid();
                 if(!processMap.containsKey(uid)){
                     String path ;
-                    String fileName = DateUtil.dateToStr(new Date(), "yyyyMMdd-HHmmss") + "-" + onlineModel.getName() + ".ts";
+//                    String fileName = DateUtil.dateToStr(new Date(), "yyyyMMdd-HHmmss") + "-" + onlineModel.getName() + ".ts";
+                    String fileName = DateUtil.dateToStr(new Date(), "yyyyMMdd-HHmmss") + "-" + onlineModel.getName() + ".mp4";
                     String nc ="0."+ RandomUtils.nextLong(00124123434363232L, 94539193545354354L);
                     String url = "https://video{0}.myfreecams.com:443/NxServer/ngrp:mfc_{1}.f4v_mobile/playlist.m3u8?nc={2}";
 //                    String cmd = "E:\\Temp\\ffmpeg.exe -hide_banner -v fatal -i {0} -c copy -vsync 2 -r 60 -b:v 500k {1}";
@@ -174,7 +175,9 @@ public class MfcService {
                         cmd = "E:\\soft\\streamlink\\bin\\streamlink.exe {0} best -o {1}";
                     }else {
                         path = "/app/captures/"+ fileName;
-                        cmd = "ffmpeg -hide_banner -v fatal -i {0} -c copy -vsync 2 -r 60 -b:v 500k {1}";
+                        //cmd = "ffmpeg -hide_banner -v fatal -i {0} -c copy -vsync 2 -r 60 -b:v 500k {1}";
+                        cmd = "ffmpeg -hide_banner -i {0} -c:v copy -c:a copy -bsf:a aac_adtstoasc {1}";
+
                     }
                     url = MessageFormat.format(url,String.valueOf(onlineModel.getRommServer()),String.valueOf(onlineModel.getRommId()),nc);
                     cmd = MessageFormat.format(cmd,url,path);
