@@ -87,7 +87,7 @@ public class MfcService {
         } catch (Exception e) {
             log.error("",e);
         }
-        driver.close();
+//        driver.close();
     }
 
 
