@@ -45,17 +45,18 @@ public class MfcService {
 
     @Scheduled(cron="0 */2 * * * ?")
     public static void open(){
+//        try {
+//            driver.get("chrome://settings/clearBrowserData");
+//            Thread.sleep(2000);
+//            driver.switchTo().activeElement();
+//            driver.findElement(By.cssSelector("* /deep/ #clearBrowsingDataConfirm")).click();
+//            Thread.sleep(1000);
+//            driver.manage().deleteAllCookies();
+//        } catch (Exception e) {
+//
+//        }
         try {
-            driver.get("chrome://settings/clearBrowserData");
-            Thread.sleep(2000);
-            driver.switchTo().activeElement();
-            driver.findElement(By.cssSelector("* /deep/ #clearBrowsingDataConfirm")).click();
-            Thread.sleep(1000);
-            driver.manage().deleteAllCookies();
-        } catch (Exception e) {
-
-        }
-        try {
+            SeleniumInit.noproxyDriver();
             log.info("--1111111");
             driver.get("https://www.myfreecams.com/#Homepage");
             log.info("--2222222");
@@ -86,7 +87,7 @@ public class MfcService {
         } catch (Exception e) {
             log.error("",e);
         }
-//        driver.close();
+        driver.close();
     }
 
 

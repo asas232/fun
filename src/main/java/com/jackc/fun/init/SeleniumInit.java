@@ -69,7 +69,7 @@ public class SeleniumInit {
                 chromeOptions.addArguments("--proxy-server=socks5://" + "127.0.0.1:1080");
             }
             driver = new ChromeDriver(chromeOptions);
-            driver.manage().timeouts().pageLoadTimeout(5,TimeUnit.SECONDS);
+//            driver.manage().timeouts().pageLoadTimeout(5,TimeUnit.SECONDS);
         }
 
 }
