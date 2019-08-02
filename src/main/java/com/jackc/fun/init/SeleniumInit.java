@@ -30,6 +30,7 @@ public class SeleniumInit {
     private static final int CHROME_DRIVER_PORT = 19999;
 
     public static WebDriver driver = null;
+    public static ChromeDriverService chromeService = null;
 
     public static void proxyDriver() {
         Proxy seleniumProxy = ClientUtil.createSeleniumProxy(ProxyServer.proxy);
@@ -87,9 +88,11 @@ public class SeleniumInit {
             driverPath ="/app/.chromedriver/bin/chromedriver";
         }
         ChromeDriverService.Builder builder = new ChromeDriverService.Builder();
-        ChromeDriverService chromeService = builder
+        chromeService = builder
                 .usingDriverExecutable(new File(driverPath))
-                .usingPort(CHROME_DRIVER_PORT).build();
+                .usingAnyFreePort()
+//                .usingPort(CHROME_DRIVER_PORT)
+                .build();
         try {
             chromeService.start();
         } catch (IOException e) {

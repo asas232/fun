@@ -25,6 +25,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.jackc.fun.init.SeleniumInit.chromeService;
 import static com.jackc.fun.init.SeleniumInit.driver;
 
 /**
@@ -57,6 +58,7 @@ public class MfcService {
 //        }
         try {
 //            SeleniumInit.noproxyDriver();
+            SeleniumInit.chromeServiceDriver();
             log.info("--1111111");
             driver.get("https://www.myfreecams.com/#Homepage");
             log.info("--2222222");
@@ -87,7 +89,8 @@ public class MfcService {
         } catch (Exception e) {
             log.error("",e);
         }
-//        driver.close();
+        driver.quit();
+        chromeService.stop();
     }
 
 
