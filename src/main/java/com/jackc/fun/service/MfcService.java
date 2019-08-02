@@ -88,7 +88,7 @@ public class MfcService {
             RestTemplate restTemplate = new RestTemplate();
             String result = restTemplate.getForObject(url, String.class);
             analyseContent(result);
-        } catch (RestClientException e) {
+        } catch (Exception e) {
             log.error("",e);
         }
     }
