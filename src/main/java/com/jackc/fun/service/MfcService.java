@@ -51,6 +51,7 @@ public class MfcService {
             driver.switchTo().activeElement();
             driver.findElement(By.cssSelector("* /deep/ #clearBrowsingDataConfirm")).click();
             Thread.sleep(1000);
+            driver.manage().deleteAllCookies();
         } catch (Exception e) {
 
         }
