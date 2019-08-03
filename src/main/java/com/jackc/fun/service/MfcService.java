@@ -64,6 +64,8 @@ public class MfcService {
         try {
 //            SeleniumInit.noproxyDriver();
 //            SeleniumInit.chromeServiceDriver();
+            String scriptToExecute = " window.performance = {}";
+           ((JavascriptExecutor) SeleniumInit.driver).executeScript(scriptToExecute);
             SeleniumUtil.clearCache(SeleniumInit.CHROME_DRIVER_PORT,driver);
             log.info("--1111111");
             SeleniumInit.driver.get("https://www.myfreecams.com/#Homepage");
