@@ -49,7 +49,7 @@ public class MfcService {
     public  static Map<Integer,Process> processMap = new HashMap<>();
 
 
-    @Scheduled(cron="0 */2 * * * ?")
+    @Scheduled(cron="0 */5 * * * ?")
     public static void open(){
 //        try {
 //            driver.get("chrome://settings/clearBrowserData");
@@ -63,7 +63,7 @@ public class MfcService {
 //        }
         try {
 //            SeleniumInit.noproxyDriver();
-//            SeleniumInit.chromeServiceDriver();
+            SeleniumInit.chromeServiceDriver();
 //            String scriptToExecute = " window.performance = {}";
 //           ((JavascriptExecutor) SeleniumInit.driver).executeScript(scriptToExecute);
 //            SeleniumUtil.clearCache(SeleniumInit.CHROME_DRIVER_PORT,driver);
@@ -97,8 +97,8 @@ public class MfcService {
         } catch (Exception e) {
             log.error("",e);
         }
-//        driver.quit();
-//        chromeService.stop();
+        driver.quit();
+        chromeService.stop();
     }
 
 
