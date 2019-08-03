@@ -64,9 +64,9 @@ public class MfcService {
         try {
 //            SeleniumInit.noproxyDriver();
 //            SeleniumInit.chromeServiceDriver();
-            String scriptToExecute = " window.performance = {}";
-           ((JavascriptExecutor) SeleniumInit.driver).executeScript(scriptToExecute);
-            SeleniumUtil.clearCache(SeleniumInit.CHROME_DRIVER_PORT,driver);
+//            String scriptToExecute = " window.performance = {}";
+//           ((JavascriptExecutor) SeleniumInit.driver).executeScript(scriptToExecute);
+//            SeleniumUtil.clearCache(SeleniumInit.CHROME_DRIVER_PORT,driver);
             log.info("--1111111");
             SeleniumInit.driver.get("https://www.myfreecams.com/#Homepage");
             log.info("--2222222");
@@ -90,8 +90,8 @@ public class MfcService {
                 String name = mfcPerformanceVo.getName();
                 if(name.contains("php/FcwExtResp.php") && name.contains("type=14")){
                     log.info(name);
-                    MfcService mfcService = new MfcService();
-                    mfcService.getModelMSg(name);
+//                    MfcService mfcService = new MfcService();
+//                    mfcService.getModelMSg(name);
                 }
             }
         } catch (Exception e) {
