@@ -90,8 +90,8 @@ public class MfcService {
                 String name = mfcPerformanceVo.getName();
                 if(name.contains("php/FcwExtResp.php") && name.contains("type=14")){
                     log.info(name);
-//                    MfcService mfcService = new MfcService();
-//                    mfcService.getModelMSg(name);
+                    MfcService mfcService = new MfcService();
+                    mfcService.getModelMSg(name);
                 }
             }
         } catch (Exception e) {
