@@ -7,10 +7,15 @@ import com.jackc.fun.pojo.MfcPerformanceVo;
 import com.jackc.fun.pojo.ModelLikeList;
 import com.jackc.fun.utils.DateUtil;
 import com.jackc.fun.utils.JsonUtil;
+import com.jackc.fun.utils.SeleniumUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.remote.Command;
+import org.openqa.selenium.remote.CommandExecutor;
+import org.openqa.selenium.remote.SessionId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -44,7 +49,7 @@ public class MfcService {
     public  static Map<Integer,Process> processMap = new HashMap<>();
 
 
-    @Scheduled(cron="0 */5 * * * ?")
+    @Scheduled(cron="0 */2 * * * ?")
     public static void open(){
 //        try {
 //            driver.get("chrome://settings/clearBrowserData");
@@ -58,9 +63,10 @@ public class MfcService {
 //        }
         try {
 //            SeleniumInit.noproxyDriver();
-            SeleniumInit.chromeServiceDriver();
+//            SeleniumInit.chromeServiceDriver();
+            SeleniumUtil.clearCache(SeleniumInit.CHROME_DRIVER_PORT,driver);
             log.info("--1111111");
-            driver.get("https://www.myfreecams.com/#Homepage");
+            SeleniumInit.driver.get("https://www.myfreecams.com/#Homepage");
             log.info("--2222222");
 //            driver.findElement(By.xpath("//*[@id=\"enter_desktop\"]")).click();
             log.info("--3333333");
@@ -75,7 +81,7 @@ public class MfcService {
         }
         try {
             String scriptToExecute = "var performance = window.performance || window.mozPerformance || window.msPerformance || window.webkitPerformance || {}; var network = performance.getEntries() || {}; return network;";
-            List<Map<String,Object>> o = (List<Map<String, Object>>) ((JavascriptExecutor) driver).executeScript(scriptToExecute);
+            List<Map<String,Object>> o = (List<Map<String, Object>>) ((JavascriptExecutor) SeleniumInit.driver).executeScript(scriptToExecute);
             List<MfcPerformanceVo> mfcPerformanceVos = JsonUtil.convertValue(o,MfcPerformanceVo.class);
             log.info("performance数量："+mfcPerformanceVos.size());
             for (MfcPerformanceVo mfcPerformanceVo : mfcPerformanceVos) {
@@ -89,8 +95,8 @@ public class MfcService {
         } catch (Exception e) {
             log.error("",e);
         }
-        driver.quit();
-        chromeService.stop();
+//        driver.quit();
+//        chromeService.stop();
     }
 
 

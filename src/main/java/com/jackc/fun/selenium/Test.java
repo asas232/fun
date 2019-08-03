@@ -5,6 +5,7 @@ import com.jackc.fun.pojo.MfcPerformanceVo;
 import com.jackc.fun.pojo.ResponseReceivedEventSmall;
 import com.jackc.fun.service.MfcService;
 import com.jackc.fun.utils.JsonUtil;
+import com.jackc.fun.utils.SeleniumUtil;
 import lombok.extern.slf4j.Slf4j;
 import net.lightbody.bmp.BrowserMobProxyServer;
 import net.lightbody.bmp.client.ClientUtil;
@@ -324,7 +325,7 @@ public class Test {
                         url = response.getUrl();
                     }
                     if("XHR".equals(type.toUpperCase()) && url.contains("php/FcwExtResp.php") && url.contains("type=14")){
-                       getResponseBody(responseReceivedEvent.getRequestId(),driver);
+                       SeleniumUtil.getResponseBody(responseReceivedEvent.getRequestId(),CHROME_DRIVER_PORT,driver);
                     }
                 }
             } catch (IOException e) {
@@ -337,20 +338,6 @@ public class Test {
     }
 
 
-
-    public static String getResponseBody(String requestId,ChromeDriver driver) {
-        String url = String.format("http://localhost:%s/session/%s/goog/cdp/execute",
-                CHROME_DRIVER_PORT, driver.getSessionId());
-        RestTemplate restTemplate = new RestTemplate();
-        Map map = new HashMap();
-        Map paramMap = new HashMap();
-        map.put("cmd","Network.getResponseBody");
-        paramMap.put("requestId",requestId);
-        map.put("params",paramMap);
-        String s = restTemplate.postForObject(url, map, String.class);
-        log.info(s);
-        return s;
-    }
 
 
 

@@ -31,7 +31,7 @@ public class InitSeting implements CommandLineRunner {
         MfcService.modelLikeList = modelLikeList;
         log.info("启动selenium");
 //        SeleniumInit.noproxyDriver();
-//        SeleniumInit.chromeServiceDriver();
+        SeleniumInit.chromeServiceDriver();
 //        Runnable runnable = new Runnable() {
 //            @Override
 //            public void run() {

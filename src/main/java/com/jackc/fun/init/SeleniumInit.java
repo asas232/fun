@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class SeleniumInit {
 
     // 必须固定端口，因为ChromeDriver没有实时获取端口的接口；
-    private static final int CHROME_DRIVER_PORT = 19999;
+    public static final int CHROME_DRIVER_PORT = 19999;
 
     public static WebDriver driver = null;
     public static ChromeDriverService chromeService = null;
@@ -90,8 +90,8 @@ public class SeleniumInit {
         ChromeDriverService.Builder builder = new ChromeDriverService.Builder();
         chromeService = builder
                 .usingDriverExecutable(new File(driverPath))
-                .usingAnyFreePort()
-//                .usingPort(CHROME_DRIVER_PORT)
+//                .usingAnyFreePort()
+                .usingPort(CHROME_DRIVER_PORT)
                 .build();
         try {
             chromeService.start();
